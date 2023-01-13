@@ -14,9 +14,10 @@ import (
 )
 
 var (
-	logger      = GetLogger()
-	port        = GetPort()
-	redirectURL = GetRedirectURL()
+	logger             = GetLogger()
+	port               = GetPort()
+	redirectURL        = GetRedirectURL()
+	redirectStatusCode = GetRedirectStatusCode()
 )
 
 type Logger struct {
@@ -34,6 +35,7 @@ func GetLogger() *zerolog.Logger {
 	logger := zerolog.New(os.Stdout).With().Timestamp().Logger()
 	return &logger
 }
+
 func GetPort() int {
 	value := os.Getenv("PORT")
 	if value == "" {
@@ -43,6 +45,20 @@ func GetPort() int {
 	i, err := strconv.Atoi(value)
 	if err != nil {
 		logger.Fatal().Err(err).Str("port", value).Msg("Unable to parse PORT environment variable")
+	}
+
+	return i
+}
+
+func GetRedirectStatusCode() int {
+	value := os.Getenv("REDIRECT_STATUS_CODE")
+	if value == "" {
+		value = "302"
+	}
+
+	i, err := strconv.Atoi(value)
+	if err != nil {
+		logger.Fatal().Err(err).Str("status_code", value).Msg("Unable to parse REDIRECT_STATUS_CODE environment variable")
 	}
 
 	return i
@@ -63,7 +79,7 @@ func GetRedirectURL() *url.URL {
 }
 
 func Handler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	http.Redirect(w, r, redirectURL.String(), http.StatusFound)
+	http.Redirect(w, r, redirectURL.String(), redirectStatusCode)
 }
 
 func main() {

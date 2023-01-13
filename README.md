@@ -11,8 +11,16 @@ An app whose sole purpose is to redirect requests to a given url.
 ```shell
 go build
 
-export PORT=5000
+# set some env vars
 export REDIRECT_URL=https://google.com
+
+# optionally define an alternative PORT (default=5000)
+export PORT=3000
+
+# optionally define an alternative redirect status code (default=302)
+export REDIRECT_STATUS_CODE=301
+
+# start the server
 ./redirect-app
 
 # in another shell
