@@ -5,7 +5,7 @@ go 1.23
 
 require (
 	github.com/julienschmidt/httprouter v1.3.0
-	github.com/rs/zerolog v1.35.0
+	github.com/rs/zerolog v1.35.1
 )
 
 require (
